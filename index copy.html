@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galpão Industrial em Itajubá MG</title>
+    <meta name="description" content="20.000 m² às margens da MG-383, galpões de 4.000 m², sede administrativa de 820 m² – venda ou locação modular sob medida.">
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+    <style>
+      :root {
+        --blue-light: #eaf6ff;
+        --blue-mid:   #52a4ff;
+        --blue-dark:  #003566;
+        --white:      #ffffff;
+        --gray:       #203040;
+        --radius:     16px;
+        --shadow:     0 8px 24px rgba(0,0,0,0.1);
+        --transition: 0.3s ease;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+      html, body {
+        height:100%;
+        font-family:'Poppins', sans-serif;
+        scroll-behavior:smooth;
+        background: linear-gradient(180deg, var(--blue-light) 0%, var(--white) 80%);
+        color: var(--gray);
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        text-align: center;
+        padding: 3rem 1rem 2rem;
+        background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-dark) 100%);
+        color: var(--white);
+        backdrop-filter: blur(4px);
+      }
+      .logo-wrapper {
+        display: flex;
+        justify-content: center;
+        margin: 0.5rem 0 1rem;
+        transition: var(--transition);
+      }
+      .logo-wrapper img {
+        max-width: 150px;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+      }
+      .logo-wrapper:hover { transform: scale(1.05); }
+      header h1 {
+        font-size: clamp(2rem,4vw,3rem);
+        font-weight: 800;
+        text-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      }
+      .gallery, .gallery-top, .gallery-bottom {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1.1rem;
+        margin: 1.5rem auto 0 auto;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        background: rgba(255,255,255,0.12);
+        padding: 1.2rem;
+        place-items: center;
+      }
+      .gallery-top { max-width: 850px; }
+      .gallery-bottom { max-width: 1180px; gap: 1.7rem; }
+      @media (max-width: 1200px) {
+        .gallery-bottom { max-width: 98vw; }
+      }
+      .gallery-item {
+        position: relative;
+        width: 60%;
+        aspect-ratio: 4/3;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.11);
+        cursor: pointer;
+        transition: transform .17s, box-shadow .18s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        min-width: 0;
+      }
+      .gallery-item:hover,
+      .gallery-item:focus-visible {
+        transform: scale(1.04);
+        box-shadow: 0 10px 36px rgba(0,0,0,0.20);
+        z-index: 2;
+      }
+      .gallery-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: var(--radius);
+        filter: brightness(0.92);
+        transition: filter 0.2s;
+      }
+      .gallery-item:hover .gallery-img {
+        filter: brightness(1.1) blur(0.5px);
+      }
+      .gallery-overlay {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        inset: 0;
+        background: rgba(22,36,60,0.65);
+        color: #fff;
+        font-size: 1.06rem;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+        opacity: 0;
+        transition: opacity .18s;
+        border-radius: var(--radius);
+        pointer-events: none;
+        z-index: 3;
+        text-shadow: 0 2px 18px #00193388;
+      }
+      .gallery-item:hover .gallery-overlay,
+      .gallery-item:focus-visible .gallery-overlay {
+        opacity: 1;
+      }
+      .gallery-overlay i {
+        margin-right: 0.7em;
+        font-size: 1.4em;
+        color: var(--blue-light);
+      }
+
+      /* MODAL CORRIGIDO FIXO */
+      .gallery-modal {
+        display: none;
+        position: fixed !important;
+        z-index: 3000;
+        left: 0; top: 0; width: 100vw; height: 100vh;
+        background: rgba(20,30,50,0.96);
+        justify-content: center; align-items: center;
+        flex-direction: column;
+        transition: background 0.2s;
+        overflow-y: auto;
+      }
+      .gallery-modal.active {
+        display: flex;
+        animation: fadeIn 0.22s;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .gallery-modal-content {
+        max-width: 94vw;
+        max-height: 86vh;
+        border-radius: var(--radius);
+        box-shadow: 0 16px 60px rgba(0,0,0,0.60);
+        border: 4px solid var(--blue-light);
+        background: #fff;
+        object-fit: contain;
+        display: block;
+        margin: auto;
+      }
+      .gallery-modal-close {
+        position: fixed;
+        top: 32px; right: 56px;
+        font-size: 2.6rem;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        text-shadow: 0 4px 16px #00193355;
+        z-index: 3001;
+        transition: color 0.15s;
+      }
+      .gallery-modal-close:hover { color: #52a4ff; }
+      body.modal-open {
+        overflow: hidden !important;
+        position: fixed;
+        width: 100vw;
+      }
+      /* ----------- RESTANTE DO SEU CSS ----------- */
+      .video-wrapper {
+        position: relative;
+        max-width: 800px;
+        margin: 1.5rem auto;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+      .video-wrapper::before {
+        content: ''; display: block; padding-top: 56.25%;
+      }
+      .video-wrapper iframe {
+        position: absolute; top:0; left:0; width:100%; height:100%; border:0;
+      }
+      header p.tagline {
+        font-size: clamp(0.9rem,1.8vw,1.2rem);
+        margin-top: 0.8rem; opacity:0.9; font-weight:300;
+      }
+      .badges { margin-top:0.8rem; }
+      .badge {
+        display:inline-block; background:rgba(255,255,255,0.2);
+        border:1px solid rgba(255,255,255,0.35); color:var(--white);
+        border-radius:30px; padding:0.4rem 0.9rem; font-size:0.85rem;
+        transition:var(--transition); margin:0 0.25rem;
+      }
+      .badge:hover { background:rgba(255,255,255,0.4); }
+      main { max-width:1200px; margin:2rem auto; padding:0 1rem 4rem; }
+      section { background:var(--white); border-radius:var(--radius);
+        box-shadow:var(--shadow); padding:2rem; margin-top:2.5rem;
+        opacity:0; transform:translateY(20px); transition:var(--transition);
+      }
+      section.aos-animate { opacity:1; transform:translateY(0); }
+      h2.section-title { font-size:1.8rem; color:var(--blue-dark);
+        font-weight:600; margin-bottom:1.2rem; position:relative;
+      }
+      h2.section-title::after { content:''; position:absolute;
+        left:0; bottom:-0.4rem; width:40px; height:3px;
+        background:var(--blue-mid); border-radius:2px;
+      }
+      .grid { display:grid; gap:1.2rem;
+        grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      }
+      .card { background:var(--blue-light); border-radius:var(--radius);
+        padding:1.2rem; text-align:center; transition:var(--transition);
+      }
+      .card:hover { transform:translateY(-4px);
+        box-shadow:0 10px 18px rgba(0,0,0,0.15);
+      }
+      .card i { font-size:1.8rem; color:var(--blue-mid); margin-bottom:0.4rem; }
+      .card strong { display:block; margin-bottom:0.4rem;
+        color:var(--blue-dark); font-size:1rem;
+      }
+      ul.checklist { list-style:none; display:grid; gap:0.6rem;
+        grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      }
+      ul.checklist li { position:relative; padding-left:1.6rem; }
+      ul.checklist li::before { content:"\f00c";
+        font-family:"Font Awesome 6 Free"; font-weight:900;
+        position:absolute; left:0; top:0; color:var(--blue-mid);
+      }
+      .cta-wrapper { display:flex; flex-direction:column;
+        gap:0.8rem; align-items:center;
+      }
+      .cta-btn { display:inline-flex; align-items:center;
+        gap:0.5rem; padding:0.7rem 1.6rem;
+        background:var(--blue-mid); color:var(--white);
+        border-radius:40px; font-weight:600;
+        box-shadow:0 6px 16px rgba(0,0,0,0.1);
+        transition:var(--transition);
+      }
+      .cta-btn:hover { background:var(--blue-dark);
+        transform:translateY(-2px);
+      }
+      .map-carousel-section { margin-top:2.5rem; }
+      .map-wrapper { position:relative; width:100%; padding-top:56.25%;
+        border-radius:var(--radius); overflow:hidden;
+        box-shadow:var(--shadow); margin-bottom:1rem;
+      }
+      .map-wrapper iframe { position:absolute; top:0; left:0;
+        width:100%; height:100%;
+      }
+      .whatsapp-container { position:fixed; bottom:30px; right:30px;
+        display:flex; align-items:center; gap:10px; z-index:1002;
+      }
+      .whatsapp-message { background:#128C7E; color:#fff;
+        padding:6px 10px; border-radius:4px;
+        font-size:0.85rem; opacity:0;
+        transform:translateX(15px);
+        transition:opacity var(--transition), transform var(--transition);
+        white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,0.2);
+      }
+      .whatsapp-container:hover .whatsapp-message {
+        opacity:1; transform:translateX(0);
+      }
+      .whatsapp-button { position:relative;
+        width:60px; height:60px;
+        background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);
+        border-radius:50%; display:flex;
+        align-items:center; justify-content:center;
+        box-shadow:0 8px 24px rgba(0,0,0,0.2);
+        transition:transform var(--transition), box-shadow var(--transition);
+      }
+      .whatsapp-button:hover { transform:scale(1.1);
+        box-shadow:0 12px 36px rgba(0,0,0,0.3);
+      }
+      .whatsapp-button i { font-size:28px; color:#fff; z-index:1; }
+      .whatsapp-button::before { content:''; position:absolute;
+        width:100%; height:100%; border-radius:50%;
+        background:rgba(37,211,102,0.4);
+        animation:pulse 2s infinite;
+      }
+      @keyframes pulse { 0% { transform:scale(1); opacity:0.7; }
+        70% { transform:scale(2.5); opacity:0; } 100% { transform:scale(2.5); opacity:0; }
+      }
+      footer { text-align:center; padding:2.5rem 1rem;
+        background:var(--blue-light); color:var(--gray);
+      }
+      @media (max-width: 850px) {
+        .gallery-top { max-width: 99vw; }
+      }
+    </style>
+  </head>
+  <body>
+    <header data-aos="fade-down">
+      <div class="logo-wrapper" data-aos="zoom-in" data-aos-delay="100">
+        <img src="images/logo.png" alt="Logo Empresa">
+      </div>
+      <h1 data-aos="fade-up" data-aos-delay="200">Complexo Industrial em Itajubá MG</h1>
+      <!-- GALERIA DO TOPO -->
+      <div class="gallery gallery-top" data-aos="zoom-in" data-aos-delay="300" style="grid-template-columns: 1fr;">
+  <div class="gallery-item" tabindex="0">
+    <img src="images/foto1.jpg" alt="Foto 1" class="gallery-img">
+    <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+  </div>
+  <div class="gallery-item" tabindex="0">
+    <img src="images/foto2.jpg" alt="Foto 2" class="gallery-img">
+    <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+  </div>
+</div>
+      <!-- MODAL PARA GALERIA -->
+      <div id="gallery-modal" class="gallery-modal">
+        <span class="gallery-modal-close">&times;</span>
+        <img class="gallery-modal-content" id="gallery-modal-img">
+      </div>
+      <!-- FIM GALERIA DO TOPO -->
+      <p class="tagline" data-aos="fade-up" data-aos-delay="400">
+        
+      </p>
+      <div class="badges" data-aos="fade-up" data-aos-delay="450">
+        <span class="badge"><i class="fa-solid fa-dollar-sign"></i> Venda</span>
+        <span class="badge"><i class="fa-solid fa-arrows-spin"></i> Locação Modular</span>
+      </div>
+    </header>
+    <main>
+      <!-- Resumo -->
+      <section data-aos="fade-up">
+        <h2 class="section-title">Resumo do Empreendimento</h2>
+        <div class="grid">
+          <div class="card" data-aos="flip-left" data-aos-delay="100">
+            <i class="fa-solid fa-arrows-to-dot"></i>
+            <strong>Área Total</strong> As margens da BR 383 com amplo estacionamento
+          </div>
+          <div class="card" data-aos="flip-left" data-aos-delay="200">
+            <i class="fa-solid fa-warehouse"></i>
+            <strong>Área Industrial</strong> 4.000 m² de galpões com pé-direito de 7 a 12 m
+          </div>
+          <div class="card" data-aos="flip-left" data-aos-delay="300">
+            <i class="fa-solid fa-building"></i>
+            <strong>Área Administrativa</strong> 820 m² em construção de alvenaria
+          </div>
+        </div>
+      </section>
+      <!-- Estrutura & Facilidades -->
+      <section data-aos="fade-up" data-aos-delay="150">
+        <h2 class="section-title">Estrutura & Facilidades</h2>
+        <ul class="checklist">
+          <li>Estacionamento para clientes</li>
+          <li>Portaria</li>
+          <li>Prédio administrativo</li>
+          <li>Refeitório e cozinha</li>
+        </ul>
+      </section>
+      <!-- Localização Estratégica -->
+      <section data-aos="fade-up" data-aos-delay="250">
+        <h2 class="section-title">Localização Estratégica</h2>
+        <ul class="checklist">
+          <li>Acesso direto pela rodovia</li>
+          <li>Próximo ao distrito industrial de Itajubá</li>
+          <li>Vizinhança de grandes empresas como GE e Helibras</li>
+          <li>60 km da Rod. Fernão Dias</li>
+          <li>100 km da Rod. Dutra</li>
+          <li>260 km de São Paulo/SP</li>
+        </ul>
+      </section>
+      <div class="gallery gallery-top" data-aos="zoom-in" data-aos-delay="300" style="grid-template-columns: 1fr;">
+  <div class="gallery-item" tabindex="0">
+    <img src="images/pau2.jpg" alt="Foto 1" class="gallery-img">
+    <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+  </div>
+  <div class="gallery-item" tabindex="0">
+    <img src="images/pau1.jpg" alt="Foto 2" class="gallery-img">
+    <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+  </div>
+</div>
+      <!-- Galeria substituída por vídeo do YouTube -->
+      <section data-aos="fade-up" data-aos-delay="350">
+        <h2 class="section-title">Visão Geral do Espaço</h2>
+        <div class="video-wrapper" style="margin-bottom:0;">
+          <iframe src="https://www.youtube.com/embed/WKaVD77tQXM?si=loTqYR3Xw0kg5FSy" title="Tour Virtual" allowfullscreen></iframe>
+        </div>
+      </section>
+      <!-- CTA -->
+      <section data-aos="zoom-in" data-aos-delay="450">
+        <h2 class="section-title">Pronto para ocupar este espaço?</h2>
+        <div class="cta-wrapper">
+          <a href="#" class="cta-btn"><i class="fa-solid fa-phone"></i> Fale com nosso time</a>
+          <a href="#" class="cta-btn"><i class="fa-solid fa-envelope"></i> Solicitar proposta</a>
+        </div>
+      </section>
+      <!-- Mapa & Galeria Final -->
+      <section class="map-carousel-section" data-aos="fade-up" data-aos-delay="550">
+        <h2 class="section-title">Localização & Galeria Interativa</h2>
+        <div class="map-wrapper" data-aos="fade-in" data-aos-delay="600">
+          <iframe src="https://www.google.com/maps/embed?pb=!4v1747360938608!6m8!1m7!1sLJqCfte31L1wFHGiru67Eg!2m2!1d-22.45533964065233!2d-45.48647848775425!3f172.51013!4f0!5f0.7820865974627469" allowfullscreen loading="lazy"></iframe>
+        </div>
+        <!-- GALERIA FINAL MAIOR -->
+        <div class="gallery gallery-bottom" data-aos="fade-in" data-aos-delay="650">
+          <div class="gallery-item" tabindex="0">
+            <img src="images/pau1.jpg" alt="Galpão industrial" class="gallery-img">
+            <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+          </div>
+          <div class="gallery-item" tabindex="0">
+            <img src="images/pau2.jpg" alt="Interior do galpão" class="gallery-img">
+            <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+          </div>
+          <div class="gallery-item" tabindex="0">
+            <img src="images/pau4.jpg" alt="Prédio administrativo" class="gallery-img">
+            <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+          </div>
+          <div class="gallery-item" tabindex="0">
+            <img src="images/pau3.jpg" alt="Pátio de manobra" class="gallery-img">
+            <div class="gallery-overlay"><i class="fa-solid fa-up-right-and-down-left-from-center"></i>CLIQUE AQUI PARA AMPLIAR</div>
+          </div>
+        </div>
+        <!-- FIM GALERIA FINAL -->
+      </section>
+    </main>
+    <!-- WhatsApp CTA -->
+    <div class="whatsapp-container" data-aos="fade-up" data-aos-delay="700">
+      <div class="whatsapp-message">Tem interesse? Clique aqui!</div>
+      <a href="https://wa.me/SEU_NUMERO" class="whatsapp-button" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+      </a>
+    </div>
+    <!-- Footer -->
+    <footer data-aos="fade-up" data-aos-delay="800">
+      © 2025 Portal Melhor Negócio — Informações sujeitas a confirmação.
+    </footer>
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init({ duration:700, offset:120, once:true, easing:'ease-in-out' });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('gallery-modal');
+        const modalImg = document.getElementById('gallery-modal-img');
+        const modalClose = document.querySelector('.gallery-modal-close');
+
+        document.body.addEventListener('click', function(e) {
+          const item = e.target.closest('.gallery-item');
+          if (item && item.querySelector('.gallery-img')) {
+            const img = item.querySelector('.gallery-img');
+            modal.classList.add('active');
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+            document.body.classList.add('modal-open'); // trava scroll
+          }
+          // Fechar modal
+          if (e.target === modal || e.target === modalClose) {
+            modal.classList.remove('active');
+            modalImg.src = "";
+            document.body.classList.remove('modal-open');
+          }
+        });
+        // ESC, Enter, Espaço
+        document.body.addEventListener('keydown', function(e) {
+          if ((e.key === "Enter" || e.key === " ") && document.activeElement.classList.contains('gallery-item')) {
+            document.activeElement.click();
+          }
+          if (e.key === "Escape" && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+            modalImg.src = "";
+            document.body.classList.remove('modal-open');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
